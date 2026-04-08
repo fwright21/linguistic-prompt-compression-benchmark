@@ -34,7 +34,6 @@ Important caveat:
 
 ## Real Caveman Baselines Used
 
-This project no longer uses the toy baseline line (`"You are a caveman..."`).
 It uses three variants adapted from JuliusBrussee/caveman and encoded in `run_tests.py`:
 
 - `caveman_real_lite`
@@ -59,6 +58,13 @@ Named methods:
 - `Judge Integration (Round 4)`
 
 Method naming is intentional: the repo keeps round traceability while presenting each candidate as a reusable compression strategy.
+
+## Method Principles
+
+- `Overhead Elimination (Round 1)`: focuses on principles of pragmatics and discourse economy (Grice, Halliday, Austin/Searle, Goffman), removing framing, hedging, politeness, and other non-propositional overhead first.
+- `Structural Compression (Round 2)`: focuses on principles of syntactic economy, preferring canonical low-cost structures over more complex constructions when they do not add necessary meaning.
+- `Minimal Semantic Compression (Round 3)`: focuses on principles of semantic retention under minimal form, preserving predicate-argument structure while stripping dispensable morphology and connective surface form.
+- `Judge Integration (Round 4)`: focuses on principles of synthesis and stress testing, combining the strongest constraints from earlier methods after adversarial review.
 
 ## Benchmark Harness
 
