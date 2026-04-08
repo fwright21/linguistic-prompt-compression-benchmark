@@ -4,3 +4,6 @@ __pycache__/
 
 # Local tool settings
 .claude/
+
+# Private local notes
+*_handoff.md
