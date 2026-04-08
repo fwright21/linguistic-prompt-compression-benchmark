@@ -1,6 +1,13 @@
-# Linguistic Prompt Compression Benchmark
+# Linguists Debate: Beat the Caveman
 
 This repo benchmarks linguistics-derived system prompts against a real caveman-style compression baseline to reduce response length while preserving usefulness.
+
+## Quick Summary
+
+- Progress: debate rounds completed, benchmark harness upgraded, 60-query dataset prepared, and Codex baseline run completed.
+- Current best evidence: `round3` is `+58.6%` shorter than `caveman_real_full` on the completed 6-query Codex benchmark (`272` vs `657` total avg words).
+- Why this is better than a generic caveman prompt: prompt rules are linguistically motivated and systematically benchmarked, not ad-hoc style instructions.
+- What is still pending: Claude rerun on the expanded set and formal quality scoring (DeepEval-style rubric evaluation).
 
 ## Project Status (as of 2026-04-08)
 
