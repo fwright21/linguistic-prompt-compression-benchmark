@@ -1,63 +1,120 @@
-# Linguists Debate: Beat the Caveman
+# Linguistic Prompt Compression Benchmark
 
-## Goal
+This repo benchmarks linguistics-derived system prompts against a real caveman-style compression baseline to reduce response length while preserving usefulness.
 
-Find a system prompt that makes Claude produce fewer output tokens than the caveman prompt, while keeping output coherent and usable.
+## Project Status (as of 2026-04-08)
 
-This is v3 of the project. v1 and v2 are archived. v3 is token reduction only — not quality, not character, not user experience. Beat caveman on raw output token count.
+- Debate rounds complete (Rounds 1-4)
+- Codex benchmark run complete on the original 6-query suite (`--repeats 3`)
+- Expanded benchmark set prepared (60 queries, category-balanced)
+- Claude rerun pending (blocked by token credits)
+- Quality scoring pipeline (DeepEval-style) planned, not implemented yet
 
-## The Caveman Baseline
+## Best Result So Far
 
-```
-You are a caveman. Speak in simple broken English. Use short sentences. Drop unnecessary words.
-```
+From `test_results.md` (Codex runner, 6-query suite, 3 repeats, baseline `caveman_real_full`):
 
-Example output for "explain photosynthesis":
+- `caveman_real_full`: `657` avg words total
+- `round3`: `272` avg words total
+- Improvement: `+58.6%` shorter than baseline
 
-> "Plant take sunlight. Make food from light and air. Leaf catch sun. Water come from ground. Carbon dioxide from air. Plant make sugar. This feed plant. Give oxygen too."
+Current winner: `round3` ("Minimal Semantic Compression").
 
-Estimated token count: ~42 tokens.
+Important caveat:
+- this result is output-length only (word-count proxy)
+- this is not yet validated on Claude
+- this does not yet include formal quality metrics
 
-That is the target to beat.
+## Real Caveman Baselines Used
 
-## Why caveman is hard to beat
+This project no longer uses the toy baseline line (`"You are a caveman..."`).
+It uses three variants adapted from JuliusBrussee/caveman and encoded in `run_tests.py`:
 
-Caveman drops: articles, auxiliaries, conjunctions, prepositions, hedges, filler, politeness markers. It keeps: nouns, main verbs, key adjectives. The result is broken but short.
+- `caveman_real_lite`
+- `caveman_real_full` (default baseline)
+- `caveman_real_ultra`
 
-Any competing prompt must produce output shorter than this while remaining parseable by a human reader.
+Reference:
+- https://github.com/JuliusBrussee/caveman
 
 ## Method
 
-Four rounds of structured debate between linguist agents, each applying their framework to the question: what system prompt instruction produces the shortest coherent Claude output?
+The prompt candidates were developed through multi-round linguist debates, then benchmarked:
 
-- Round 1: Grice, Halliday, Austin/Searle, Goffman
-- Round 2: Chomsky, Sapir/Whorf, Labov, Pinker
-- Round 3: Levinson, Bickerton, Lakoff, Montague
-- Round 4: Judge panel (Grice, Pinker, Bickerton) stress-testing the three candidate prompts
+- Round 1: overhead elimination
+- Round 2: structural compression
+- Round 3: minimal semantic compression
+- Round 4: judge integration and stress test
 
-Each round produces one candidate system prompt. Round 4 picks the overall winner.
+Candidate prompts are benchmarked against the caveman baseline with repeated runs and aggregate summaries.
 
-## Files
+## Benchmark Harness
 
-| File | Contents |
-|------|----------|
-| `00_debate_method.md` | How the debates work |
-| `01_linguist_agents.md` | Agent profiles and research questions |
-| `02_shared_questions.md` | Questions all agents must answer |
-| `03_synthesis_template.md` | Template for candidate system prompts |
-| `04_better_than_caveman_criteria.md` | Evaluation axes |
-| `05_round_one_debate.md` | Full Round 1 debate |
-| `06_live_debate_template.md` | Blank debate template |
-| `07_live_run_mode.md` | Instructions for running a new round |
-| `08_round_two_debate.md` | Full Round 2 debate |
-| `09_final_proposal.md` | Synthesis of Round 1 and Round 2 |
-| `10_benchmark_suite.md` | 6 benchmark query types |
-| `11_benchmark_cases.md` | Full Round 3 debate |
-| `12_benchmark_results_template.md` | Full Round 4 judge panel |
-| `13_round_three_agents.md` | Round 3 agent profiles |
-| `14_round_three_debate.md` | Expanded Round 3 debate record |
-| `proposals.md` | Leaderboard of all candidates |
+Main script: `run_tests.py`
 
-## Honest note
+Key features:
+- supports `codex` and `claude` runners (`--runner`)
+- repeat runs (`--repeats`)
+- configurable baseline (`--baseline`)
+- external query set via JSONL (`--queries`)
+- per-query + per-category summaries in markdown output
 
-Caveman is a strong baseline. If no candidate beats it on raw tokens, that result is recorded honestly in `proposals.md`.
+Current query set:
+- `benchmark_queries.jsonl`
+- 60 total queries
+- categories: factual, definition, comparison, procedure, recommendation, ambiguous, safety_sensitive, numerical_reasoning
+- per-query metadata: `expected_traits`, `rubric_focus`
+
+## Run Commands
+
+Smoke run:
+
+```bash
+python3 run_tests.py --runner codex --repeats 1 --output test_results_codex_smoke.md
+```
+
+Full Codex run:
+
+```bash
+python3 run_tests.py --runner codex --repeats 3 --output test_results_codex.md
+```
+
+Full Claude run (pending credits):
+
+```bash
+python3 run_tests.py --runner claude --repeats 3 --output test_results_claude.md
+```
+
+## Results Artifacts
+
+- `test_results.md` - latest completed benchmark output
+- `benchmark_report.html` - presentation/report view of findings
+- `run_tests.py` - benchmark harness
+- `benchmark_queries.jsonl` - benchmark dataset
+
+## Next Steps
+
+1. Run full 60-query benchmark on Claude.
+2. Re-run Codex on the 60-query set for apples-to-apples comparison.
+3. Add quality scoring (correctness, completeness, usefulness, safety).
+4. Integrate DeepEval (or equivalent) for rubric-based automated evaluation.
+5. Report combined metric: compression + quality (quality-adjusted compression).
+
+## File Map
+
+- `00_debate_method.md` - debate mechanics
+- `01_linguist_agents.md` - linguist personas and prompts
+- `02_shared_questions.md` - shared agent prompts
+- `03_synthesis_template.md` - synthesis structure
+- `04_better_than_caveman_criteria.md` - evaluation criteria
+- `05_round_one_debate.md` - Round 1 transcript
+- `06_live_debate_template.md` - template for new rounds
+- `07_live_run_mode.md` - live run guidance
+- `08_round_two_debate.md` - Round 2 transcript
+- `09_final_proposal.md` - synthesis proposal
+- `10_benchmark_suite.md` - original benchmark framing
+- `11_benchmark_cases.md` - benchmark case development
+- `12_benchmark_results_template.md` - result template
+- `13_round_three_agents.md` - Round 3 setup
+- `14_round_three_debate.md` - Round 3 transcript
+- `proposals.md` - proposal leaderboard
