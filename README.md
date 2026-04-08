@@ -5,7 +5,7 @@ This repo benchmarks linguistics-derived system prompts against a real caveman-s
 ## Quick Summary
 
 - Progress: debate rounds completed, benchmark harness upgraded, 60-query dataset prepared, and Codex baseline run completed.
-- Current best evidence: `round3` is `+58.6%` shorter than `caveman_real_full` on the completed 6-query Codex benchmark (`272` vs `657` total avg words).
+- Current best evidence: `Minimal Semantic Compression (Round 3)` is `+58.6%` shorter than `caveman_real_full` on the completed 6-query Codex benchmark (`272` vs `657` total avg words).
 - Why this is better than a generic caveman prompt: prompt rules are linguistically motivated and systematically benchmarked, not ad-hoc style instructions.
 - What is still pending: Claude rerun on the expanded set and formal quality scoring (DeepEval-style rubric evaluation).
 
@@ -22,10 +22,10 @@ This repo benchmarks linguistics-derived system prompts against a real caveman-s
 From `test_results.md` (Codex runner, 6-query suite, 3 repeats, baseline `caveman_real_full`):
 
 - `caveman_real_full`: `657` avg words total
-- `round3`: `272` avg words total
+- `Minimal Semantic Compression (Round 3)`: `272` avg words total
 - Improvement: `+58.6%` shorter than baseline
 
-Current winner: `round3` ("Minimal Semantic Compression").
+Current winner: `Minimal Semantic Compression (Round 3)`.
 
 Important caveat:
 - this result is output-length only (word-count proxy)
@@ -44,16 +44,21 @@ It uses three variants adapted from JuliusBrussee/caveman and encoded in `run_te
 Reference:
 - https://github.com/JuliusBrussee/caveman
 
-## Method
+## Methodology
 
-The prompt candidates were developed through multi-round linguist debates, then benchmarked:
+The process has two layers:
 
-- Round 1: overhead elimination
-- Round 2: structural compression
-- Round 3: minimal semantic compression
-- Round 4: judge integration and stress test
+1. ideation layer: linguist-agent debates generate prompt candidates from explicit linguistic principles
+2. evidence layer: repeated benchmark runs measure response-length outcomes against the caveman baseline
 
-Candidate prompts are benchmarked against the caveman baseline with repeated runs and aggregate summaries.
+Named methods:
+
+- `Overhead Elimination (Round 1)`
+- `Structural Compression (Round 2)`
+- `Minimal Semantic Compression (Round 3)`
+- `Judge Integration (Round 4)`
+
+Method naming is intentional: the repo keeps round traceability while presenting each candidate as a reusable compression strategy.
 
 ## Benchmark Harness
 
