@@ -1,6 +1,6 @@
 # Linguists Debate: Beat the Caveman
 
-This repo benchmarks linguistics-derived system prompts against a real caveman-style compression baseline to reduce response length while preserving usefulness.
+This repo stages a debate between major linguists (Chomsky, Pinker, Lakoff, and others) to design a prompt-compression method that beats caveman, using minimal linguistic principles to reduce output length without losing usefulness.
 
 ## Quick Summary
 
